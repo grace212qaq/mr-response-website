@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Mr.Response" description="Mr.Response — 个人网站" activePage="home">
+  <section class="hero">
+    <h1>Mr.Response</h1>
+    <p class="tagline">写代码 / 写文字 / 想事情</p>
+    <p class="bio">
+      独立开发者，关注 AI、系统设计、生产力工具。目前在折腾 Hermes Agent 和 HermesCore。
+    </p>
+  </section>
+
+  <h2>项目</h2>
+  <div class="project-grid">
+    <ProjectCard
+      title="Hermes Agent"
+      description="AI 私人秘书——编排层智能体，调度 DeerFlow + LocalExecutor 干活"
+      tags={['AI', 'Agent', 'TypeScript']}
+      href="https://hermes-agent.nousresearch.com"
+    />
+    <ProjectCard
+      title="HermesCore"
+      description="三层主动记忆系统——工作/短期/长期记忆，自动遗忘与检索"
+      tags={['AI', 'Memory', 'Python']}
+      href="/project/hermescore"
+    />
+    <ProjectCard
+      title="LLM Wiki"
+      description="Karpathy 风格的个人知识库，每日自动抓取消化 AI 前沿"
+      tags={['Knowledge', 'AI', 'Automation']}
+      href="/project/llm-wiki"
+    />
+  </div>
+
+  <h2>最新文章</h2>
+  {recentPosts.length > 0 ? (
+    <ul class="blog-list">
+      {recentPosts.map(post => (
+        <li class="blog-item">
+          <span class="date">{post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
+          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p style="color: var(--text-secondary);">还没写文章……</p>
+  )}
+  {recentPosts.length > 0 && (
+    <p><a href="/blog">查看全部文章 →</a></p>
+  )}
+</BaseLayout>

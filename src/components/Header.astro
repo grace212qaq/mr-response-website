@@ -1,0 +1,22 @@
+---
+export interface Props {
+  activePage?: string;
+}
+
+const { activePage } = Astro.props;
+const pages = [
+  { slug: 'home', path: '/', label: '~' },
+  { slug: 'blog', path: '/blog', label: '/blog' },
+  { slug: 'about', path: '/about', label: '/about' },
+  { slug: 'contact', path: '/contact', label: '/contact' },
+];
+---
+
+<nav>
+  <a href="/" class="logo">mr.response</a>
+  <div class="links">
+    {pages.map(p => (
+      <a href={p.path} class:list={{ active: activePage === p.slug }}>{p.label}</a>
+    ))}
+  </div>
+</nav>

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.vite/
+*.local
+.env
+deploy.py
+gh-auth.sh
+.gh-wrap.sh
+.DS_Store

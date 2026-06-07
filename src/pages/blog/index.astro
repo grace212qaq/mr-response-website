@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<BaseLayout title="Blog — Mr.Response" description="Mr.Response 的博客" activePage="blog">
+  <h1>/blog</h1>
+  <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">写一些关于 AI、编程、效率的想法。</p>
+
+  {posts.length > 0 ? (
+    <ul class="blog-list">
+      {posts.map(post => (
+        <li class="blog-item">
+          <span class="date">{post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
+          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p style="color: var(--text-secondary);">暂无文章。</p>
+  )}
+</BaseLayout>
